@@ -11,12 +11,14 @@ public class Player : MonoBehaviour {
 
     private float moveInput;
     private bool isGrounded;
+    private bool isWallDetected;
     private bool isJumping = false;
     private bool isFacingRight = true;
 
     [SerializeField] private Transform GroundCheck;
+    [SerializeField] private Transform WallCheck;
     [SerializeField] private LayerMask Ground;
-    [SerializeField] private float GroundRadious = .3f;
+    [SerializeField] private float CheckRadious = .3f;
 
     [SerializeField] private float coyoteTime = .2f;
 
@@ -33,7 +35,10 @@ public class Player : MonoBehaviour {
         moveInput = Input.GetAxis("Horizontal");
         isJumping = Input.GetKeyDown("w") || Input.GetKeyDown(KeyCode.UpArrow);
 
-        bool _isGrounded = Physics2D.OverlapCircle(GroundCheck.position, GroundRadious, Ground);
+        bool _isGrounded = Physics2D.OverlapCircle(GroundCheck.position, CheckRadious, Ground);
+        bool isWallDetected = Physics2D.OverlapCircle(WallCheck.position, CheckRadious, Ground);
+
+        Debug.Log(isWallDetected);
 
         if (_isGrounded) {
             isGrounded = true;

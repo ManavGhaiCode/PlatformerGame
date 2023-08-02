@@ -47,11 +47,13 @@ public class Player : MonoBehaviour {
             canWallSlide = false;
         }
 
-        isWallSliding = canWallSlide && Input.GetKey("s");
+        isWallSliding = canWallSlide && (Input.GetKey("s") || Input.GetKey(KeyCode.DownArrow));
 
         if (isWallSliding) {
             rb.velocity = new Vector2 (rb.velocity.x, rb.velocity.y * .1f);
         }
+
+        anim.SetBool("isWallSliding", isWallSliding);
 
         Debug.Log(isWallDetected);
 
@@ -91,7 +93,9 @@ public class Player : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        rb.velocity = new Vector2 (moveInput * speed, rb.velocity.y);
+        if (!isWallSliding) {
+            rb.velocity = new Vector2 (moveInput * speed, rb.velocity.y);
+        }
     }
 
     private void UnGround() {
@@ -99,7 +103,9 @@ public class Player : MonoBehaviour {
     }
 
     private void Flip() {
-        transform.Rotate(0, 180, 0);
-        isFacingRight = !isFacingRight;
+        if (!isWallSliding) {
+            transform.Rotate(0, 180, 0);
+            isFacingRight = !isFacingRight;
+        }
     }
 }

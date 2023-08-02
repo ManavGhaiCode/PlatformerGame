@@ -15,6 +15,9 @@ public class Player : MonoBehaviour {
     private bool isJumping = false;
     private bool isFacingRight = true;
 
+    private bool canWallSlide = false;
+    private bool isWallSliding = false;
+
     [SerializeField] private Transform GroundCheck;
     [SerializeField] private Transform WallCheck;
     [SerializeField] private LayerMask Ground;
@@ -37,6 +40,18 @@ public class Player : MonoBehaviour {
 
         bool _isGrounded = Physics2D.OverlapCircle(GroundCheck.position, CheckRadious, Ground);
         bool isWallDetected = Physics2D.OverlapCircle(WallCheck.position, CheckRadious, Ground);
+
+        if (isWallDetected && rb.velocity.y < 0) {
+            canWallSlide = true;
+        } else {
+            canWallSlide = false;
+        }
+
+        isWallSliding = canWallSlide && Input.GetKey("s");
+
+        if (isWallSliding) {
+            rb.velocity = new Vector2 (rb.velocity.x, rb.velocity.y * .1f);
+        }
 
         Debug.Log(isWallDetected);
 

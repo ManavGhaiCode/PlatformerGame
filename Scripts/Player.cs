@@ -11,9 +11,12 @@ public class Player : MonoBehaviour {
 
     private float moveInput;
     private bool isGrounded;
+    private int FacingDir = 1;
+    private bool canMove = true;
     private bool isWallDetected;
     private bool isJumping = false;
     private bool isFacingRight = true;
+    private bool wasWallSliding = false;
 
     private bool canWallSlide = false;
     private bool isWallSliding = false;
@@ -36,7 +39,7 @@ public class Player : MonoBehaviour {
 
     private void Update() {
         moveInput = Input.GetAxis("Horizontal");
-        isJumping = Input.GetKeyDown("w") || Input.GetKeyDown(KeyCode.UpArrow);
+        isJumping = Input.GetKeyDown("z");
 
         bool _isGrounded = Physics2D.OverlapCircle(GroundCheck.position, CheckRadious, Ground);
         bool isWallDetected = Physics2D.OverlapCircle(WallCheck.position, CheckRadious, Ground);
@@ -47,10 +50,13 @@ public class Player : MonoBehaviour {
             canWallSlide = false;
         }
 
-        isWallSliding = canWallSlide && (Input.GetKey("s") || Input.GetKey(KeyCode.DownArrow));
+        isWallSliding = canWallSlide && Input.GetKey("x");
 
         if (isWallSliding) {
             rb.velocity = new Vector2 (rb.velocity.x, rb.velocity.y * .1f);
+            wasWallSliding = true;
+        } else {
+            Invoke("UnWallSliding", .2f);
         }
 
         anim.SetBool("isWallSliding", isWallSliding);
@@ -69,12 +75,17 @@ public class Player : MonoBehaviour {
         }
 
         if (isJumping) {
-            if (isGrounded) {
-                rb.velocity = new Vector2 (rb.velocity.x, (Vector2.up * JumpForce).y);
-            } else if (ExtraJumps > 0) {
-                rb.velocity = new Vector2 (rb.velocity.x, (Vector2.up * JumpForce).y);
-                ExtraJumps -= 1;
+            if (wasWallSliding) {
+                WallJump();
+            } else {
+                if (isGrounded) {
+                    rb.velocity = new Vector2 (rb.velocity.x, (Vector2.up * JumpForce).y);
+                } else if (ExtraJumps > 0) {
+                    rb.velocity = new Vector2 (rb.velocity.x, (Vector2.up * JumpForce).y);
+                    ExtraJumps -= 1;
+                }
             }
+
         }
 
         if (isFacingRight && moveInput < 0) {
@@ -93,7 +104,7 @@ public class Player : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        if (!isWallSliding) {
+        if (!isWallSliding && canMove) {
             rb.velocity = new Vector2 (moveInput * speed, rb.velocity.y);
         }
     }
@@ -102,8 +113,25 @@ public class Player : MonoBehaviour {
         isGrounded = false;
     }
 
+    private void WallJump() {
+        canMove = false;
+        rb.velocity = new Vector2 (3 * -FacingDir, JumpForce);
+
+        Invoke("ResetCanMove", .2f);
+    }
+
+    private void UnWallSliding() {
+        wasWallSliding = false;
+    }
+
+    private void ResetCanMove() {
+        canMove = true;
+    }
+
     private void Flip() {
         if (!isWallSliding) {
+            FacingDir *= -1;
+
             transform.Rotate(0, 180, 0);
             isFacingRight = !isFacingRight;
         }

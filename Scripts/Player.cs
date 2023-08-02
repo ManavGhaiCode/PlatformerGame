@@ -4,6 +4,8 @@ public class Player : MonoBehaviour {
     public float speed = 5f;
     public float JumpForce = 5f;
 
+    public int _ExtraJumps = 1;
+
     private Rigidbody2D rb;
 
     private float moveInput;
@@ -14,23 +16,34 @@ public class Player : MonoBehaviour {
     [SerializeField] private LayerMask Ground;
     [SerializeField] private float GroundRadious = .3f;
 
+    private int ExtraJumps = 1;
+
     void Start() {
         rb = GetComponent<Rigidbody2D>();
+        ExtraJumps = _ExtraJumps;
     }
 
     private void Update() {
         moveInput = Input.GetAxis("Horizontal");
+        isJumping = Input.GetKeyDown("w") || Input.GetKeyDown(KeyCode.UpArrow);
 
         isGrounded = Physics2D.OverlapCircle(GroundCheck.position, GroundRadious, Ground);
+
+        if (isGrounded) {
+            ExtraJumps = _ExtraJumps;
+        }
+
+        if (isJumping) {
+            if (isGrounded) {
+                rb.velocity = new Vector2 (rb.velocity.x, (Vector2.up * JumpForce).y);
+            } else if (ExtraJumps > 0) {
+                rb.velocity = new Vector2 (rb.velocity.x, (Vector2.up * JumpForce).y);
+                ExtraJumps -= 1;
+            }
+        }
     }
 
     private void FixedUpdate() {
-        isJumping = Input.GetKey("w") || Input.GetKey(KeyCode.UpArrow);
-
         rb.velocity = new Vector2 (moveInput * speed, rb.velocity.y);
-
-        if (isJumping && isGrounded) {
-            rb.velocity = new Vector2 (rb.velocity.x, (Vector2.up * JumpForce).y);
-        }
     }
 }

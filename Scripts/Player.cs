@@ -38,8 +38,12 @@ public class Player : MonoBehaviour {
         if (_isGrounded) {
             isGrounded = true;
             ExtraJumps = _ExtraJumps;
+
+            anim.SetBool("isGrounded", _isGrounded);
         } else {
             Invoke("UnGround", coyoteTime);
+
+            anim.SetBool("isGrounded", _isGrounded);
         }
 
         if (isJumping) {
@@ -62,6 +66,8 @@ public class Player : MonoBehaviour {
         } else {
             anim.SetBool("isRunning", false);
         }
+
+        anim.SetFloat("Y_velocity", Mathf.Clamp(rb.velocity.y, -1, 1));
     }
 
     private void FixedUpdate() {

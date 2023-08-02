@@ -10,6 +10,10 @@ public class Player : MonoBehaviour {
     private bool isGrounded;
     private bool isJumping = false;
 
+    [SerializeField] private Transform GroundCheck;
+    [SerializeField] private LayerMask Ground;
+    [SerializeField] private float GroundRadious = .3f;
+
     void Start() {
         rb = GetComponent<Rigidbody2D>();
     }
@@ -18,6 +22,10 @@ public class Player : MonoBehaviour {
         moveInput = Input.GetAxis("Horizontal");
         isJumping = Input.GetKeyDown("w") || Input.GetKeyDown(KeyCode.UpArrow);
 
+        isGrounded = Physics2D.OverlapCircle(GroundCheck.position, GroundRadious, Ground);
+    }
+
+    private void FixedUpdate() {
         rb.velocity = new Vector2 (moveInput * speed, rb.velocity.y);
 
         if (isJumping) {

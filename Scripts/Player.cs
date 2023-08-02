@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
     private float moveInput;
     private bool isGrounded;
     private bool isJumping = false;
+    private bool isFacingRight = true;
 
     [SerializeField] private Transform GroundCheck;
     [SerializeField] private LayerMask Ground;
@@ -46,6 +47,12 @@ public class Player : MonoBehaviour {
                 ExtraJumps -= 1;
             }
         }
+
+        if (isFacingRight && moveInput < 0) {
+            Flip();
+        } else if (!isFacingRight && moveInput > 0) {
+            Flip();
+        }
     }
 
     private void FixedUpdate() {
@@ -54,5 +61,10 @@ public class Player : MonoBehaviour {
 
     private void UnGround() {
         isGrounded = false;
+    }
+
+    private void Flip() {
+        transform.Rotate(0, 180, 0);
+        isFacingRight = !isFacingRight;
     }
 }

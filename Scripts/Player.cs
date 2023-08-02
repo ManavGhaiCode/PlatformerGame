@@ -7,6 +7,7 @@ public class Player : MonoBehaviour {
     public int _ExtraJumps = 1;
 
     private Rigidbody2D rb;
+    private Animator anim;
 
     private float moveInput;
     private bool isGrounded;
@@ -23,6 +24,8 @@ public class Player : MonoBehaviour {
 
     void Start() {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+
         ExtraJumps = _ExtraJumps;
     }
 
@@ -52,6 +55,12 @@ public class Player : MonoBehaviour {
             Flip();
         } else if (!isFacingRight && moveInput > 0) {
             Flip();
+        }
+
+        if (moveInput != 0) {
+            anim.SetBool("isRunning", true);
+        } else {
+            anim.SetBool("isRunning", false);
         }
     }
 

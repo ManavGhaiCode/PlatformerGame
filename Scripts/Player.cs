@@ -16,6 +16,8 @@ public class Player : MonoBehaviour {
     [SerializeField] private LayerMask Ground;
     [SerializeField] private float GroundRadious = .3f;
 
+    [SerializeField] private float coyoteTime = .2f;
+
     private int ExtraJumps = 1;
 
     void Start() {
@@ -27,10 +29,13 @@ public class Player : MonoBehaviour {
         moveInput = Input.GetAxis("Horizontal");
         isJumping = Input.GetKeyDown("w") || Input.GetKeyDown(KeyCode.UpArrow);
 
-        isGrounded = Physics2D.OverlapCircle(GroundCheck.position, GroundRadious, Ground);
+        bool _isGrounded = Physics2D.OverlapCircle(GroundCheck.position, GroundRadious, Ground);
 
-        if (isGrounded) {
+        if (_isGrounded) {
+            isGrounded = true;
             ExtraJumps = _ExtraJumps;
+        } else {
+            Invoke("UnGround", coyoteTime);
         }
 
         if (isJumping) {
@@ -45,5 +50,9 @@ public class Player : MonoBehaviour {
 
     private void FixedUpdate() {
         rb.velocity = new Vector2 (moveInput * speed, rb.velocity.y);
+    }
+
+    private void UnGround() {
+        isGrounded = false;
     }
 }

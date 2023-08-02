@@ -1,16 +1,22 @@
 fileFormatVersion: 2
-guid: 09f4b8f50dab5b34495ea64fc80b3047
+guid: 603abb83490921841976d0f1b2045f23
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6769692827079125451
-    second: Part 1 (22x22)_0
+      213: 3974224528455760076
+    second: Wall Jump (32x32)_0
   - first:
-      213: 6851959776083884160
-    second: Part 1 (22x22)_1
+      213: 403085039841989221
+    second: Wall Jump (32x32)_1
   - first:
-      213: 7713393198726954842
-    second: Part 1 (22x22)_2
+      213: -6018873884784744797
+    second: Wall Jump (32x32)_2
+  - first:
+      213: -674972067355074983
+    second: Wall Jump (32x32)_3
+  - first:
+      213: 4366178942990776957
+    second: Wall Jump (32x32)_4
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -126,13 +132,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Part 1 (22x22)_0
+      name: Wall Jump (32x32)_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 22
-        height: 22
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,20 +146,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8ce795907c76b1e4298b647368f6202d
-      internalID: 6769692827079125451
+      spriteID: f3d23dab70d776640aba60ea9a9735a8
+      internalID: 3974224528455760076
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Part 1 (22x22)_1
+      name: Wall Jump (32x32)_1
       rect:
         serializedVersion: 2
-        x: 22
+        x: 32
         y: 0
-        width: 22
-        height: 22
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -161,20 +167,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e9c2d188e3404904f8aba6ea042f52f1
-      internalID: 6851959776083884160
+      spriteID: fadd2ea57ae354a41a17bd8897bdd5aa
+      internalID: 403085039841989221
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Part 1 (22x22)_2
+      name: Wall Jump (32x32)_2
       rect:
         serializedVersion: 2
-        x: 44
+        x: 64
         y: 0
-        width: 22
-        height: 22
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -182,8 +188,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c6b9e99ab0d47cb42afc16d3634ebfc1
-      internalID: 7713393198726954842
+      spriteID: 0516a2f488c059645923015334f56405
+      internalID: -6018873884784744797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall Jump (32x32)_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ca694e0aa35eea489081c249c513715
+      internalID: -674972067355074983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall Jump (32x32)_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 417e34c5ae3ae5e4ab0013a2f0d52a69
+      internalID: 4366178942990776957
       vertices: []
       indices: 
       edges: []
@@ -199,9 +247,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Part 1 (22x22)_0: 6769692827079125451
-      Part 1 (22x22)_1: 6851959776083884160
-      Part 1 (22x22)_2: 7713393198726954842
+      Wall Jump (32x32)_0: 3974224528455760076
+      Wall Jump (32x32)_1: 403085039841989221
+      Wall Jump (32x32)_2: -6018873884784744797
+      Wall Jump (32x32)_3: -674972067355074983
+      Wall Jump (32x32)_4: 4366178942990776957
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -20,15 +20,16 @@ public class Player : MonoBehaviour {
 
     private void Update() {
         moveInput = Input.GetAxis("Horizontal");
-        isJumping = Input.GetKeyDown("w") || Input.GetKeyDown(KeyCode.UpArrow);
 
         isGrounded = Physics2D.OverlapCircle(GroundCheck.position, GroundRadious, Ground);
     }
 
     private void FixedUpdate() {
+        isJumping = Input.GetKey("w") || Input.GetKey(KeyCode.UpArrow);
+
         rb.velocity = new Vector2 (moveInput * speed, rb.velocity.y);
 
-        if (isJumping) {
+        if (isJumping && isGrounded) {
             rb.velocity = new Vector2 (rb.velocity.x, (Vector2.up * JumpForce).y);
         }
     }

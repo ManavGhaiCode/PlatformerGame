@@ -16,6 +16,7 @@ public class Player : MonoBehaviour {
     private bool canMove = true;
     private bool isWallDetected;
     private bool isJumping = false;
+    private bool isKnokedback = false;
     private bool isFacingRight = true;
     private bool wasWallSliding = false;
 
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private Transform GroundCheck;
     [SerializeField] private Transform WallCheck;
     [SerializeField] private LayerMask Ground;
+    [SerializeField] private Vector2 KnockDir;
     [SerializeField] private float CheckRadious = .3f;
 
     [SerializeField] private float coyoteTime = .2f;
@@ -39,6 +41,11 @@ public class Player : MonoBehaviour {
     }
 
     private void Update() {
+        AnimController();
+
+        if (isKnokedback)
+            return;
+
         TakeInput();
         CollisionCheck();
 
@@ -49,9 +56,7 @@ public class Player : MonoBehaviour {
         }
 
         Move();
-
         Flipper();
-        AnimController();
     }
 
     private void TakeInput() {
@@ -158,5 +163,22 @@ public class Player : MonoBehaviour {
             transform.Rotate(0, 180, 0);
             isFacingRight = !isFacingRight;
         }
+    }
+
+    private void UnKnockBack() {
+        isKnokedback = false;
+        anim.SetBool("isKnokedback", isKnokedback);
+    }
+
+    public void Knockback() {
+        canMove = false;
+        isKnokedback = true;
+
+        anim.SetBool("isKnokedback", isKnokedback);
+
+        rb.velocity = new Vector2 (KnockDir.x * -FacingDir, KnockDir.y);
+
+        Invoke("ResetCanMove", .34f);
+        Invoke("UnKnockBack", .34f);
     }
 }

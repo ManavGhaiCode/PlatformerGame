@@ -5,7 +5,7 @@ public class Trap : MonoBehaviour {
         Player player = hitInfo.GetComponent<Player>();
 
         if (player != null) {
-            Debug.Log("Works");
+            player.Knockback();
         }
     }
 }

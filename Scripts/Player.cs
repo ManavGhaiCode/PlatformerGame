@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
 
     private float moveInput;
     private bool isGrounded;
+    private bool _isGrounded;
     private int FacingDir = 1;
     private bool canMove = true;
     private bool isWallDetected;
@@ -38,11 +39,8 @@ public class Player : MonoBehaviour {
     }
 
     private void Update() {
-        moveInput = Input.GetAxis("Horizontal");
-        isJumping = Input.GetKeyDown("z");
-
-        bool _isGrounded = Physics2D.OverlapCircle(GroundCheck.position, CheckRadious, Ground);
-        bool isWallDetected = Physics2D.OverlapCircle(WallCheck.position, CheckRadious, Ground);
+        TakeInput();
+        CollisionCheck();
 
         if (isWallDetected && rb.velocity.y < 0) {
             canWallSlide = true;
@@ -50,8 +48,32 @@ public class Player : MonoBehaviour {
             canWallSlide = false;
         }
 
-        isWallSliding = canWallSlide && Input.GetKey("x");
+        Move();
 
+        Flipper();
+        AnimController();
+    }
+
+    private void TakeInput() {
+        moveInput = Input.GetAxis("Horizontal");
+        isJumping = Input.GetKeyDown("z");
+
+        isWallSliding = canWallSlide && Input.GetKey("x");
+    }
+
+    private void CollisionCheck() {
+        _isGrounded = Physics2D.OverlapCircle(GroundCheck.position, CheckRadious, Ground);
+        isWallDetected = Physics2D.OverlapCircle(WallCheck.position, CheckRadious, Ground);
+
+        if (_isGrounded) {
+            isGrounded = true;
+            ExtraJumps = _ExtraJumps;
+        } else {
+            Invoke("UnGround", coyoteTime);
+        }
+    }
+
+    private void Move() {
         if (isWallSliding) {
             rb.velocity = new Vector2 (rb.velocity.x, rb.velocity.y * .1f);
             wasWallSliding = true;
@@ -59,41 +81,39 @@ public class Player : MonoBehaviour {
             Invoke("UnWallSliding", .2f);
         }
 
-        anim.SetBool("isWallSliding", isWallSliding);
-
-        Debug.Log(isWallDetected);
-
-        if (_isGrounded) {
-            isGrounded = true;
-            ExtraJumps = _ExtraJumps;
-
-            anim.SetBool("isGrounded", _isGrounded);
-        } else {
-            Invoke("UnGround", coyoteTime);
-
-            anim.SetBool("isGrounded", _isGrounded);
-        }
-
         if (isJumping) {
-            if (wasWallSliding) {
-                WallJump();
-            } else {
-                if (isGrounded) {
-                    rb.velocity = new Vector2 (rb.velocity.x, (Vector2.up * JumpForce).y);
-                } else if (ExtraJumps > 0) {
-                    rb.velocity = new Vector2 (rb.velocity.x, (Vector2.up * JumpForce).y);
-                    ExtraJumps -= 1;
-                }
-            }
+            JumpManager();
+        }
+    }
 
+    private void JumpManager() {
+        if (wasWallSliding) {
+            WallJump();
+        } else {
+            if (isGrounded) {
+                Jump();
+            } else if (ExtraJumps > 0) {
+                Jump();
+                ExtraJumps -= 1;
+            }
         }
 
+        canWallSlide = false;
+    }
+
+    private void Jump() {
+        rb.velocity = new Vector2 (rb.velocity.x, (Vector2.up * JumpForce).y);
+    }
+
+    private void Flipper() {
         if (isFacingRight && moveInput < 0) {
             Flip();
         } else if (!isFacingRight && moveInput > 0) {
             Flip();
         }
+    }
 
+    private void AnimController() {
         if (moveInput != 0) {
             anim.SetBool("isRunning", true);
         } else {
@@ -101,6 +121,8 @@ public class Player : MonoBehaviour {
         }
 
         anim.SetFloat("Y_velocity", Mathf.Clamp(rb.velocity.y, -1, 1));
+        anim.SetBool("isWallSliding", isWallSliding);
+        anim.SetBool("isGrounded", _isGrounded);
     }
 
     private void FixedUpdate() {

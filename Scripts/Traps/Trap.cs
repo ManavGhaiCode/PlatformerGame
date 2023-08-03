@@ -5,7 +5,15 @@ public class Trap : MonoBehaviour {
         Player player = hitInfo.GetComponent<Player>();
 
         if (player != null) {
-            player.Knockback();
+            int KnockbackDir = 0;
+
+            if (player.GetComponent<Transform>().position.x > transform.position.x) {
+                KnockbackDir = 1;
+            } else if (player.GetComponent<Transform>().position.x < transform.position.x) {
+                KnockbackDir = -1;
+            }
+
+            player.Knockback(KnockbackDir);
         }
     }
 }

@@ -175,13 +175,13 @@ public class Player : MonoBehaviour {
         canKnokedback = true;
     }
 
-    public void Knockback() {
+    public void Knockback(int dir) {
         if (canKnokedback) {
             canMove = false;
             isKnokedback = true;
             canKnokedback = false;
 
-            rb.velocity = new Vector2 (KnockDir.x * -FacingDir, KnockDir.y);
+            rb.velocity = new Vector2 (KnockDir.x * dir, KnockDir.y);
 
             Invoke("ResetCanMove", .34f);
             Invoke("UnKnockBack", .34f);

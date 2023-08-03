@@ -138,6 +138,7 @@ public class Player : MonoBehaviour {
     private void WallJump() {
         canMove = false;
         rb.velocity = new Vector2 (5 * -FacingDir, JumpForce);
+        ExtraJumps = _ExtraJumps;
 
         Invoke("ResetCanMove", .2f);
     }

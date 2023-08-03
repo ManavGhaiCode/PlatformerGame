@@ -17,6 +17,7 @@ public class Player : MonoBehaviour {
     private bool isWallDetected;
     private bool isJumping = false;
     private bool isKnokedback = false;
+    private bool canKnokedback = true;
     private bool isFacingRight = true;
     private bool wasWallSliding = false;
 
@@ -128,6 +129,7 @@ public class Player : MonoBehaviour {
         anim.SetFloat("Y_velocity", Mathf.Clamp(rb.velocity.y, -1, 1));
         anim.SetBool("isWallSliding", isWallSliding);
         anim.SetBool("isGrounded", _isGrounded);
+        anim.SetBool("isKnokedback", isKnokedback);
     }
 
     private void FixedUpdate() {
@@ -167,18 +169,24 @@ public class Player : MonoBehaviour {
 
     private void UnKnockBack() {
         isKnokedback = false;
-        anim.SetBool("isKnokedback", isKnokedback);
+    }
+
+    private void ResetCanKnockBack() {
+        canKnokedback = true;
     }
 
     public void Knockback() {
-        canMove = false;
-        isKnokedback = true;
+        if (canKnokedback) {
+            canMove = false;
+            isKnokedback = true;
+            canKnokedback = false;
 
-        anim.SetBool("isKnokedback", isKnokedback);
+            rb.velocity = new Vector2 (KnockDir.x * -FacingDir, KnockDir.y);
 
-        rb.velocity = new Vector2 (KnockDir.x * -FacingDir, KnockDir.y);
+            Invoke("ResetCanMove", .34f);
+            Invoke("UnKnockBack", .34f);
+            Invoke("ResetCanKnockBack", 1.5f);
+        }
 
-        Invoke("ResetCanMove", .34f);
-        Invoke("UnKnockBack", .34f);
     }
 }

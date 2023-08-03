@@ -106,9 +106,9 @@ public class Player : MonoBehaviour {
     }
 
     private void Flipper() {
-        if (isFacingRight && rb.velocity.x < 0) {
+        if (isFacingRight && moveInput < 0) {
             Flip();
-        } else if (!isFacingRight && rb.velocity.x > 0) {
+        } else if (!isFacingRight && moveInput > 0) {
             Flip();
         }
     }

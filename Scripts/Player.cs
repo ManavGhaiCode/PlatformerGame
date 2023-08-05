@@ -27,8 +27,11 @@ public class Player : MonoBehaviour {
     [SerializeField] private Transform GroundCheck;
     [SerializeField] private Transform WallCheck;
     [SerializeField] private LayerMask Ground;
+    [SerializeField] private LayerMask EnemyLayer;
     [SerializeField] private Vector2 KnockDir;
     [SerializeField] private float CheckRadious = .3f;
+    [SerializeField] private float EnemyCheckRadious = .3f;
+    [SerializeField] private int EnemyDamage = 5;
 
     [SerializeField] private float coyoteTime = .2f;
 
@@ -49,6 +52,8 @@ public class Player : MonoBehaviour {
 
         TakeInput();
         CollisionCheck();
+
+        EnemyCheck();
 
         if (isWallDetected && rb.velocity.y < 0) {
             canWallSlide = true;
@@ -76,6 +81,19 @@ public class Player : MonoBehaviour {
             ExtraJumps = _ExtraJumps;
         } else {
             Invoke("UnGround", coyoteTime);
+        }
+    }
+
+    private void EnemyCheck() {
+        Collider2D[] HitEnemies = Physics2D.OverlapCircleAll(GroundCheck.position, EnemyCheckRadious, EnemyLayer);
+
+        foreach (Collider2D enemy in HitEnemies) {
+            Enemy EnemyScript = enemy.GetComponent<Enemy>();
+
+            if (EnemyScript != null) {
+                EnemyScript.Damage(EnemyDamage);
+                Jump();
+            }
         }
     }
 
